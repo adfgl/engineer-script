@@ -1,6 +1,6 @@
 ﻿namespace ScriptLib.Units
 {
-    public readonly struct Unit
+    public readonly struct Unit : IEquatable<Unit>
     {
         public const int MaxReasonablePower = 16;
 
@@ -42,16 +42,7 @@
             a.luminousIntensity == b.luminousIntensity;
 
         public static bool SameOrScalar(in Unit a, in Unit b) =>
-            a.IsUnitless() || b.IsUnitless() || SameDimensions(in a, in b);
-
-        public bool IsUnitless() =>
-            length == 0 &&
-            mass == 0 &&
-            time == 0 &&
-            electricCurrent == 0 &&
-            thermodynamicTemperature == 0 &&
-            amountOfSubstance == 0 &&
-            luminousIntensity == 0;
+            a == One|| b == One || SameDimensions(in a, in b);
 
         public static Unit Invert(in Unit a)
         {
@@ -136,6 +127,38 @@
                 $"K^{thermodynamicTemperature} " +
                 $"mol^{amountOfSubstance} " +
                 $"cd^{luminousIntensity}";
+        }
+
+        public bool Equals(Unit other)
+        {
+            return
+                length == other.length &&
+                mass == other.mass &&
+                time == other.time &&
+                electricCurrent == other.electricCurrent &&
+                thermodynamicTemperature == other.thermodynamicTemperature &&
+                amountOfSubstance == other.amountOfSubstance &&
+                luminousIntensity == other.luminousIntensity;
+        }
+
+        public static bool operator ==(Unit left, Unit right) => left.Equals(right);
+        public static bool operator !=(Unit left, Unit right) => !left.Equals(right);
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(
+                length,
+                mass,
+                time,
+                electricCurrent,
+                thermodynamicTemperature,
+                amountOfSubstance,
+                luminousIntensity);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Unit && Equals((Unit)obj);
         }
     }
 }
