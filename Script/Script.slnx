@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="DebugConsole/DebugConsole.csproj" />
+  <Project Path="ScriptLib/ScriptLib.csproj" />
+</Solution>
