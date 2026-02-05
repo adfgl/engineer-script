@@ -24,16 +24,13 @@ namespace ScriptLib.Units
 
             foreach (var c in catalogs)
             {
-                // 1) base units
                 foreach (var u in c.Units)
                     AddDefault(u);
 
-                // 2) derived prefixed units only for SI catalog
                 if (c.Standard == UnitStandard.SI)
                     AddSiPrefixedDerivatives(c.Units, c.Prefixes);
             }
 
-            // Optional: accept "u" as micro alias for existing µ-prefixed symbols
             AddMicroUAliases();
         }
 
@@ -56,7 +53,6 @@ namespace ScriptLib.Units
 
                 foreach (var p in prefixes)
                 {
-                    // Skip collisions (explicit units win)
                     string sym = p.Symbol.Length == 0 ? baseU.Symbol : p.Symbol + baseU.Symbol;
                     if (_defaults.ContainsKey(sym)) continue;
 
@@ -65,7 +61,7 @@ namespace ScriptLib.Units
                         Symbol = sym,
                         Name = p.Name.Length == 0 ? baseU.Name : (p.Name + baseU.Name),
                         ScaleToSI = baseU.ScaleToSI * p.Factor,
-                        Prefixable = false, // don’t allow stacking prefixes
+                        Prefixable = false, 
                         Aliases = null
                     };
 
@@ -76,7 +72,6 @@ namespace ScriptLib.Units
 
         void AddMicroUAliases()
         {
-            // Maps "uF" -> "µF" etc if µ-form exists.
             foreach (var sym in _defaults.Keys)
             {
                 if (sym.Length >= 2 && sym[0] == 'µ')
@@ -104,7 +99,6 @@ namespace ScriptLib.Units
             return _defaults.TryGetValue(key, out spec);
         }
 
-        // ---- Override API ----
         public void Override(UnitSpec spec, bool overwrite = true)
         {
             if (!overwrite && _overrides.ContainsKey(spec.Symbol))

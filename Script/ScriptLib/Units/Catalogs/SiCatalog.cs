@@ -8,6 +8,39 @@ namespace ScriptLib.Units.Catalogs
     {
         public override UnitStandard Standard => UnitStandard.SI;
 
+        static readonly PreferredUnit[] _preferred =
+   [
+           // Base
+           new(L, "m"),
+            new(M, "kg"),
+            new(T, "s"),
+            new(I, "A"),
+            new(Th, "K"),
+            new(N, "mol"),
+            new(J, "cd"),
+
+            // Geometry
+            new(L ^ 2, "m^2"),
+            new(L ^ 3, "m^3"),
+
+            // Kinematics
+            new(L / T, "m/s"),
+            new(L / (T ^ 2), "m/s^2"),
+
+            // Mechanics (engineering-friendly defaults)
+            new(M * L * (T ^ -2), "kN"),                 // force
+            new(M * (L ^ -1) * (T ^ -2), "MPa"),          // pressure/stress
+            new(M * (L ^ 2) * (T ^ -2), "kJ"),            // energy
+            new(M * (L ^ 2) * (T ^ -3), "kW"),            // power
+
+            // Electricity
+            new(I * T, "C"),
+            new(M * (L ^ 2) * (T ^ -3) * (I ^ -1), "V"),  // voltage
+            new(M * (L ^ 2) * (T ^ -3) * (I ^ -2), "Ω"),  // resistance
+        ];
+
+            public override ReadOnlySpan<PreferredUnit> Preferred => _preferred;
+
         static readonly Prefix[] _prefixes =
         [
             new("quetta", "Q", 1e30,  30),

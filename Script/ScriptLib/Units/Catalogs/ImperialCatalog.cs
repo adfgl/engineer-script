@@ -29,6 +29,20 @@ namespace ScriptLib.Units.Catalogs
         const double ImpPintToM3 = ImpGallonToM3 / 8.0;
         const double ImpFluidOunceToM3 = ImpGallonToM3 / 160.0;
 
+        static readonly PreferredUnit[] _preferred =
+    [
+            new(L, "ft"),
+            new(M, "lb"),
+            new(T, "s"),
+            new(Th, "°F"),
+
+            new(M * L * (T ^ -2), "lbf"),
+            new(M * (L ^ -1) * (T ^ -2), "psi"),
+            new(L ^ 3, "imp gal"),
+        ];
+
+        public override ReadOnlySpan<PreferredUnit> Preferred => _preferred;
+
         static readonly UnitSpec[] _units =
         [
             // ---------- Length ----------

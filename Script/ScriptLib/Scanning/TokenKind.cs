@@ -1,19 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ScriptLib.Scanning
+﻿namespace ScriptLib.Scanning
 {
     public enum TokenKind
     {
-        Start,
-        Dot,
-        DotMid,
-        Slash,
-        Caret,
-        LParen,
-        RParen,
-        Plus,
-        Minus,
+        Undefined,
+
+        EndOfFile,
+        LineBreak,
+        TabBreak,
+
+        Error,
+        Keyword,
+        Operator,
+
+        LiteralNumeric,
+        LiteralIdentifier,
+
+        OpenParen,
+        CloseParen,
+
+        OpenSquare,
+        CloseSquare,
+
+        OpenCurly,
+        CloseCurly,
     }
 }

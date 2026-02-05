@@ -4,6 +4,8 @@ using System.Text;
 
 namespace ScriptLib.Units
 {
+    public readonly record struct PreferredUnit(Unit Dim, string Symbol);
+
     public abstract class UnitCatalogBase
     {
         protected static readonly Unit L = new Unit(length: 1);
@@ -24,5 +26,22 @@ namespace ScriptLib.Units
 
         /// <summary>Base unit specs only (no auto-prefixed derivatives here).</summary>
         public abstract ReadOnlySpan<UnitSpec> Units { get; }
+
+        public virtual ReadOnlySpan<PreferredUnit> Preferred => ReadOnlySpan<PreferredUnit>.Empty;
+
+        public bool TryGetPreferredSymbol(in Unit dim, out string symbol)
+        {
+            var p = Preferred;
+            for (int i = 0; i < p.Length; i++)
+            {
+                if (p[i].Dim == dim)
+                {
+                    symbol = p[i].Symbol;
+                    return true;
+                }
+            }
+            symbol = "";
+            return false;
+        }
     }
 }

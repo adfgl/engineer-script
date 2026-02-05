@@ -18,6 +18,19 @@ namespace ScriptLib.Units.Catalogs
         const double KsiToPa = PsiToPa * 1000.0;
         const double UsGallonToM3 = 0.003785411784;
 
+        static readonly PreferredUnit[] _preferred =
+[
+            new(L, "ft"),
+            new(M, "lb"),
+            new(T, "s"),
+            new(Th, "°F"),
+
+            new(M * L * (T ^ -2), "lbf"), // force
+            new(M * (L ^ -1) * (T ^ -2), "psi"), // pressure/stress
+        ];
+
+        public override ReadOnlySpan<PreferredUnit> Preferred => _preferred;
+
         static readonly UnitSpec[] _units =
         [
             new(UnitStandard.US, UnitBehavior.Multiplicative, "length", "inch", "in", L, InchToMeter, 0, Prefixable: false),
